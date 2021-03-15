@@ -1,0 +1,11 @@
+@use 'form.scss';
+@use 'gamesList';
+
+#root{
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

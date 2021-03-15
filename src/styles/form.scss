@@ -1,0 +1,13 @@
+.game_form_container{
+    width: 100%;
+    height: 150px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    input{
+        width: 100%;
+        height: 2rem;
+        box-sizing: border-box;
+    }   
+}
