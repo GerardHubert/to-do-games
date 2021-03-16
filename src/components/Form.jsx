@@ -5,42 +5,46 @@ class Form extends React.Component{
     constructor(props){
         super(props)
         this.state = {
-            gameTitle: '',
-            platform: '',
+            gameTitle: null,
+            platform: null,
             valid: false,
             game: {
-                title: '',
-                plaftform: '',
+                title: null,
+                plaftform: null,
             },
             gamesList: []
         }
     }
 
-    isFormValid = () => {
-        return this.state.platform !== '' && this.state.gameTitle !== '' ? this.setState({valid: true}) : this.setState({valid: false})
-    }
-
     handleGameChange = (event) => {
-        event.target.value === '' ? this.setState({gameTitle: ''}) : this.setState({gameTitle: event.target.value})
+        event.target.value === null || event.target.value === ''
+            ? this.setState({gameTitle: null}) : this.setState({gameTitle: event.target.value})
     }
 
     handlePlatformChange = (event) => {
-        event.target.value === '' ? this.setState({platform: ''}) : this.setState({platform: event.target.value})
+        event.target.value === null || event.target.value === ''
+            ? this.setState({platform: null}) : this.setState({platform: event.target.value})
+    }
+
+    isFormValid () {
+        this.state.gameTitle !== null && this.state.platform !== null 
+            ? this.setState({valid: true}) : this.setState({valid: false});
     }
 
     handleClick = (event) => {
-        event.preventDefault();
-        const game = {};
 
-        /*if (this.state.valid === true) {
-            game.title = this.state.gameTitle;
-            game.platform = this.state.platform;
-            this.setState({game : game})
-            this.componentDidUpdate = () => {
-                console.log(this.state.game)
-            }
-        }*/
-        console.log(this.state.valid)
+        this.isFormValid();
+
+        event.preventDefault();
+        if (this.state.value === true) {
+            this.setState({
+                game: {
+                    title: this.state.gameTitle,
+                    platform: this.state.platform
+                }
+            })
+        }
+        this.componentDidUpdate = () => console.log(this.state.valid);
 
     }
 
@@ -60,7 +64,6 @@ class Form extends React.Component{
                         type="submit" className='submit' value='Valider' />
                 </form>
 
-                
                 <div className="games_list_container">
                     <div className="one_game">
                         <i id="done_not" className="fas fa-exclamation-circle"></i>
