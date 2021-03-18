@@ -5,51 +5,58 @@ class Form extends React.Component{
     constructor(props){
         super(props)
         this.state = {
-            gameTitle: null,
+            isValid: false,
+            title: null,
             platform: null,
-            valid: false,
             game: {
-                title: null,
-                plaftform: null,
-            },
-            gamesList: []
+                title: '',
+                plaftform: '',
+            }
         }
     }
 
     handleGameChange = (event) => {
-        event.target.value === null || event.target.value === ''
-            ? this.setState({gameTitle: null}) : this.setState({gameTitle: event.target.value})
+        event.target.value.length === 0
+            ? this.setState({title: null})
+            : this.setState({title: event.target.value})
     }
 
     handlePlatformChange = (event) => {
-        event.target.value === null || event.target.value === ''
-            ? this.setState({platform: null}) : this.setState({platform: event.target.value})
-    }
-
-    isFormValid () {
-        this.state.gameTitle !== null && this.state.platform !== null 
-            ? this.setState({valid: true}) : this.setState({valid: false});
+        event.target.value.length === 0 
+            ? this.setState({platform: null})
+            : this.setState({platform: event.target.value});
     }
 
     handleClick = (event) => {
-
-        this.isFormValid();
-
         event.preventDefault();
-        if (this.state.value === true) {
+        if (this.state.title !== null && this.state.platform !== null) {
+            this.setState({isValid: true})
+            const title = this.state.title;
+            const platform = this.state.platform;
             this.setState({
                 game: {
-                    title: this.state.gameTitle,
-                    platform: this.state.platform
+                    title: title,
+                    platform: platform
                 }
             })
         }
-        this.componentDidUpdate = () => console.log(this.state.valid);
-
     }
 
     render() {
 
+        const isValid = this.state.isValid;
+        let gameElement;
+        if (isValid) {
+            gameElement =
+                <div className="games_list_container">
+                    <div className="one_game">
+                        <i id="done_not" className="fas fa-exclamation-circle"></i>
+                        <span className="game_title">{this.state.game.title}</span>
+                        <span className="platform">{this.state.game.platform}</span>
+                        <i id="delete_game" className="fas fa-trash"></i>
+                    </div>
+                </div>
+        }
         return(
 
             <>
@@ -63,16 +70,7 @@ class Form extends React.Component{
                     <input onClick={this.handleClick}
                         type="submit" className='submit' value='Valider' />
                 </form>
-
-                <div className="games_list_container">
-                    <div className="one_game">
-                        <i id="done_not" className="fas fa-exclamation-circle"></i>
-                        <span className="game_title">{this.state.game.title}</span>
-                        <span className="platform">{this.state.game.platform}</span>
-                        <i onClick={this.handleClick} id="delete_game" className="fas fa-trash"></i>
-                    </div>
-                </div>
-
+                {gameElement}
             </>
 
         )
