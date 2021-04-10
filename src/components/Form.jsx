@@ -11,8 +11,14 @@ class Form extends React.Component{
             game: {
                 title: '',
                 plaftform: '',
-            }
+            },
+            games: localStorage.getItem('games')
         }
+    }
+
+    componentDidMount() {
+        console.log('STATE : ' + this.state.games);
+        console.log('STORAGE : ' + localStorage.getItem('games'))
     }
 
     handleGameChange = (event) => {
@@ -27,18 +33,25 @@ class Form extends React.Component{
             : this.setState({platform: event.target.value});
     }
 
-    handleClick = (event) => {
+    /**
+     * 
+     * au click, on met à jour le state en enregistrant le titre du jeu et la plateforme saisis
+     * on ajoute jeu+plateforme au tableau jeu, pour affichage dans la liste des jeux à faire
+     */
+
+    handleClick = (event) => {  
         event.preventDefault();
+
         if (this.state.title !== null && this.state.platform !== null) {
             this.setState({isValid: true})
-            const title = this.state.title;
-            const platform = this.state.platform;
+            const game = {title: this.state.title, platform: this.state.platform}
             this.setState({
-                game: {
-                    title: title,
-                    platform: platform
-                }
+                game: game
             })
+
+            let games = JSON.parse(this.state.games); // on récupère l'état de la liste des jeux
+            games === null ? games = [game] : games.push(game); // on créée un tableau ou onn ajoute le nouveau jeu à la liste
+            localStorage.setItem('games', JSON.stringify(games)); // on enregistre la nouvelle liste dans le storage
         }
     }
 
@@ -57,6 +70,7 @@ class Form extends React.Component{
                     </div>
                 </div>
         }
+        
         return(
 
             <>
