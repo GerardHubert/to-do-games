@@ -17,20 +17,15 @@ class Form extends React.Component{
     }
 
     componentDidMount() {
-        console.log('STATE : ' + this.state.games);
-        console.log('STORAGE : ' + localStorage.getItem('games'))
+        console.log('STATE : ' + this.state.games)
     }
 
     handleGameChange = (event) => {
-        event.target.value.length === 0
-            ? this.setState({title: null})
-            : this.setState({title: event.target.value})
+        event.target.value.length === 0 ? this.setState({title: null}) : this.setState({title: event.target.value})
     }
 
     handlePlatformChange = (event) => {
-        event.target.value.length === 0 
-            ? this.setState({platform: null})
-            : this.setState({platform: event.target.value});
+        event.target.value.length === 0 ? this.setState({platform: null}) : this.setState({platform: event.target.value});
     }
 
     /**
@@ -44,14 +39,25 @@ class Form extends React.Component{
 
         if (this.state.title !== null && this.state.platform !== null) {
             this.setState({isValid: true})
-            const game = {title: this.state.title, platform: this.state.platform}
+            let game = {title: this.state.title, platform: this.state.platform}
             this.setState({
                 game: game
             })
 
-            let games = JSON.parse(this.state.games); // on récupère l'état de la liste des jeux
-            games === null ? games = [game] : games.push(game); // on créée un tableau ou onn ajoute le nouveau jeu à la liste
-            localStorage.setItem('games', JSON.stringify(games)); // on enregistre la nouvelle liste dans le storage
+            //let games = JSON.parse(this.state.games);
+            let games = JSON.parse(localStorage.getItem('games'));
+            switch (games === null) {
+                case true:
+                    games = [game];
+                    localStorage.setItem('games', JSON.stringify(games))
+                    this.setState({games: games})
+                break;
+                case false:
+                    games.push(game);
+                    localStorage.setItem('games', JSON.stringify(games))
+                    this.setState({games: games});
+                break;
+            }
         }
     }
 
